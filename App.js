@@ -37,13 +37,49 @@ app.post('/add', async(req, res) => {
 });
 
 app.get('/product', async(req, res) => {
-    const products = await dbHandle.showAllCollection('', "product");
+    const products = await dbHandle.searchProduct('', "product");
     var userName = 'Not logged In';
     if (req.session.username) {
         userName = req.session.username;
     }
     res.render('listProduct', { model: products, username: userName });
 });
+
+app.get('/edit', async(req, res) => {
+    const id = req.query.id;
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(id) };
+
+    const product = await dbHandle.findOneProduct(condition, "product");
+    res.render('editForm', { product: product })
+});
+
+app.post('/edit', async(req, res) => {
+    const id = req.body.id;
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(id) };
+
+    let nameInput = req.body.nameTxT;
+    let priceInput = req.body.priceTxT;
+    const newData = { $set: { name: nameInput, price: priceInput } };
+
+    await dbHandle.editFromCollection(condition, "product", newData);
+    res.redirect('product');
+});
+
+app.get('/delete', async(req, res) => {
+    const id = req.query.id;
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(id) };
+    await dbHandle.deleteFromCollection(condition, "product");
+    res.redirect('/product');
+});
+
+app.post('/search', async(req, res) => {
+    const searchText = req.body.nameTxT;
+    const results = await dbHandle.searchProduct(searchText, "product");
+    res.render('listProduct', { model: results })
+})
 
 app.get('/login', (req, res) => {
     res.render('login');

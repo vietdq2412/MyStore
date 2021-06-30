@@ -14,12 +14,29 @@ async function insertOneIntoCollection(document, collection) {
     await dbo.collection(collection).insertOne(document);
 }
 
-async function showAllCollection(condition, collectionName) {
+async function searchProduct(condition, collectionName) {
     const dbo = await getDbo();
     const searchCondition = new RegExp(condition, 'i')
     var results = await dbo.collection(collectionName).
     find({ name: searchCondition }).toArray();
     return results;
+}
+
+async function findOneProduct(condition, collectionName) {
+    const dbo = await getDbo();
+    var results = await dbo.collection(collectionName).
+    findOne(condition);
+    return results;
+}
+
+async function editFromCollection(condition, collection, newData) {
+    const dbo = await getDbo();
+    await dbo.collection(collection).updateOne(condition, newData);
+}
+
+async function deleteFromCollection(condition, collection) {
+    const dbo = await getDbo();
+    await dbo.collection(collection).deleteOne(condition);
 }
 
 async function checkLogin(username, password) {
@@ -32,4 +49,4 @@ async function checkLogin(username, password) {
         return false;
 }
 
-module.exports = { insertOneIntoCollection, showAllCollection, checkLogin };
+module.exports = { insertOneIntoCollection, searchProduct, editFromCollection, deleteFromCollection, checkLogin, findOneProduct };
