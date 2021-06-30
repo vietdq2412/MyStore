@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Product list</h1>
+     <div class="navBar">
+        <a href="/">Home</a>
+        <a href="/add">Add new</a>
+        <a href="/product">Products</a>
+    </div>
+    <hr>
+   <h2>{{username}}</h2>
+   <form method="POST" action="/search">
+        <input type="text" name="txtName">
+        <input type="submit" value="Search">
+   </form>
+   <table class="table table-hover">
+       <thead>
+           <tr>
+               <th>Name</th>
+               <th>Price</th>
+               <th>Edit</th>
+               <th>Delete</th>
+           </tr>
+       </thead>
+       <tbody>
+           {{#each model}}
+           <tr>
+                <td>{{name}}</td>
+                <td>{{price}}</td>
+                 <td><a href="/edit?id={{_id}}">Edit</a></td>
+                <td><a href="/delete?id={{_id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+            </tr>
+            {{/each}}
+       </tbody>      
+   </table>
+</body>
+</html>
