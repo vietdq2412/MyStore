@@ -11,8 +11,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Product list</h1>
-     <div> {{username}}</div>
+    <h1 style="text-align: center;">Product list</h1>
+    <hr>
    
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -33,6 +33,7 @@
         </li>
         
       </ul>
+      <div style="margin-right: 50px;">User: {{username}}</div> 
       <form class="d-flex" action="/search" method="POST">
         <input class="form-control me-2" type="search" name="nameTxT" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>

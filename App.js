@@ -25,10 +25,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/add', (req, res) => {
-    res.render('addForm');
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
+    res.render('addForm', { username: userName });
 });
 
 app.post('/add', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     let nameInput = req.body.nameTxT;
     let priceInput = req.body.priceTxT;
     let newProduct = { name: nameInput, price: priceInput };
@@ -37,8 +47,12 @@ app.post('/add', async(req, res) => {
 });
 
 app.get('/product', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     const products = await dbHandle.searchProduct('', "product");
-    var userName = 'Not logged In';
     if (req.session.username) {
         userName = req.session.username;
     }
@@ -46,15 +60,25 @@ app.get('/product', async(req, res) => {
 });
 
 app.get('/edit', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
 
     const product = await dbHandle.findOneProduct(condition, "product");
-    res.render('editForm', { product: product })
+    res.render('editForm', { product: product, username: userName })
 });
 
 app.post('/edit', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     const id = req.body.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
@@ -68,6 +92,11 @@ app.post('/edit', async(req, res) => {
 });
 
 app.get('/delete', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
@@ -76,9 +105,14 @@ app.get('/delete', async(req, res) => {
 });
 
 app.post('/search', async(req, res) => {
+    if (req.session.username) {
+        userName = req.session.username;
+    } else {
+        res.redirect('/login');
+    }
     const searchText = req.body.nameTxT;
     const results = await dbHandle.searchProduct(searchText, "product");
-    res.render('listProduct', { model: results })
+    res.render('listProduct', { model: results, username: userName })
 })
 
 app.get('/login', (req, res) => {
