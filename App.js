@@ -92,9 +92,7 @@ app.post('/edit', async(req, res) => {
 });
 
 app.get('/delete', async(req, res) => {
-    if (req.session.username) {
-        userName = req.session.username;
-    } else {
+    if (!req.session.username) {
         res.redirect('/login');
     }
     const id = req.query.id;
