@@ -141,6 +141,6 @@ app.post('/register', async(req, res) => {
     res.redirect('/login');
 })
 
-let PORT = process.env.PORT || 5000;
-app.listen(PORT);
+const PORT = 5000;
+app.listen(process.env.PORT || PORT);
 console.log("running - " + PORT);
